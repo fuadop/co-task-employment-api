@@ -32,12 +32,6 @@ namespace employment_api.Controllers
                 var code = input.Code.ToUpper().Trim();
                 var name = input.Name.Trim();
 
-                if (code == "" || name == "")
-                {
-                    Response.StatusCode = 422;
-                    return new ResponseBase<Department>(422, "Validation Error: One or more required fields are empty (code, name)", null);
-                }
-
                 var existing = _db.Departments
                       .Where(x => x.Code == code)
                       .FirstOrDefault();

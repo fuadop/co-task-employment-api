@@ -33,21 +33,6 @@ namespace employment_api.Controllers
                 var dob = input.DOB.Trim();
                 var departmentCode = input.DepartmentCode.Trim().ToUpper();
 
-                // validate empty fields
-                if (firstName == "" || lastName == "" || phoneNumber == "" || dob == "" || departmentCode == "")
-                {
-                    Response.StatusCode = 422;
-                    return new ResponseBase<Employee>(422, "Validation Error: Missing one or more required fields (firstName, lastName, phoneNumber, dob, departmentCode)", null);
-                }
-
-                // vaildate phoneNumber
-                var isDigit = Int64.TryParse(phoneNumber, out Int64 _digit);
-                if (isDigit != true || phoneNumber.Length != 11 || phoneNumber[0] != '0')
-                {
-                    Response.StatusCode = 422;
-                    return new ResponseBase<Employee>(422, "Validation Error: phoneNumber should be 11 numeric characters and should start with '0'", null);
-                }
-
                 // validate dob
                 DateTime? _dob = null;
                 try
@@ -58,7 +43,7 @@ namespace employment_api.Controllers
                 if (_dob == null)
                 {
                     Response.StatusCode = 422;
-                    return new ResponseBase<Employee>(422, "Validation Error: 'dob' should be in 'dd/MM/yyyy' format (e.g 16/10/2022)", null);
+                    return new ResponseBase<Employee>(422, "Validation Error: Invalid dob provided", null);
                 }
                 if (_dob > DateTime.Now)
                 {
@@ -156,7 +141,7 @@ namespace employment_api.Controllers
                     if (_dob == null)
                     {
                         Response.StatusCode = 422;
-                        return new ResponseBase<Employee>(422, "Validation Error: 'dob' should be in 'dd/MM/yyyy' format (e.g 16/10/2022)", null);
+                        return new ResponseBase<Employee>(422, "Validation Error: Invalid dob provided", null);
                     }
                     if (_dob > DateTime.Now)
                     {
@@ -169,18 +154,6 @@ namespace employment_api.Controllers
 
                 if (phoneNumber != null && phoneNumber != "")
                 {
-                    // vaildate phoneNumber
-                    var isDigit = Int64.TryParse(phoneNumber, out Int64 _digit);
-                    Console.WriteLine(isDigit.ToString());
-                    Console.WriteLine(phoneNumber);
-                    Console.WriteLine(phoneNumber[0]);
-                    Console.WriteLine(phoneNumber.Substring(0, 1));
-                    if (isDigit != true || phoneNumber.Length != 11 || phoneNumber[0] != '0')
-                    {
-                        Response.StatusCode = 422;
-                        return new ResponseBase<Employee>(422, "Validation Error: phoneNumber should be 11 numeric characters and should start with '0'", null);
-                    }
-
                     employee.PhoneNumber = phoneNumber;
                 }
 
